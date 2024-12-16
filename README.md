@@ -1,48 +1,53 @@
-Overview
-========
+## Setting Up Your Airflow Project
 
-Welcome to Astronomer! This project was generated after you ran 'astro dev init' using the Astronomer CLI. This readme describes the contents of the project, as well as how to run Apache Airflow on your local machine.
+### Prerequisites:
+1. **Install Docker:** Make sure you have the latest version of Docker installed on your computer. 
+2. **Install Astro:** Astro is a platform that helps you build data pipelines. Install it following the instructions on the official Astro website.
+3. **Install Airflow:** Airflow is a popular open-source platform for scheduling and monitoring data pipelines. You can install it using Astro or directly from the Airflow website.
 
-Project Contents
-================
+### Creating the Project:
 
-Your Astro project contains the following files and folders:
+1. **Create a New Folder:** Create a new folder on your computer where you want to store your project files.
+2. **Initialize Astro:** Open a terminal window in that folder and run the following command:
+   ```bash
+   astro dev init
+   ```
+   This will create a new Astro project with the necessary files and configurations.
 
-- dags: This folder contains the Python files for your Airflow DAGs. By default, this directory includes one example DAG:
-    - `example_astronauts`: This DAG shows a simple ETL pipeline example that queries the list of astronauts currently in space from the Open Notify API and prints a statement for each astronaut. The DAG uses the TaskFlow API to define tasks in Python, and dynamic task mapping to dynamically print a statement for each astronaut. For more on how this DAG works, see our [Getting started tutorial](https://www.astronomer.io/docs/learn/get-started-with-airflow).
-- Dockerfile: This file contains a versioned Astro Runtime Docker image that provides a differentiated Airflow experience. If you want to execute other commands or overrides at runtime, specify them here.
-- include: This folder contains any additional files that you want to include as part of your project. It is empty by default.
-- packages.txt: Install OS-level packages needed for your project by adding them to this file. It is empty by default.
-- requirements.txt: Install Python packages needed for your project by adding them to this file. It is empty by default.
-- plugins: Add custom or community plugins for your project to this file. It is empty by default.
-- airflow_settings.yaml: Use this local-only file to specify Airflow Connections, Variables, and Pools instead of entering them in the Airflow UI as you develop DAGs in this project.
+### Writing the Airflow DAG:
 
-Deploy Your Project Locally
-===========================
+1. **Create a Python File:** Create a new Python file in the `dags` folder of your project.
+2. **Write Your Code:** In this file, you'll define the tasks for your data pipeline. These tasks will typically involve:
+   - **Extracting data:** Fetching data from a source like an API or a database.
+   - **Transforming data:** Cleaning, filtering, and manipulating the data.
+   - **Loading data:** Storing the processed data in a target database or file system.
 
-1. Start Airflow on your local machine by running 'astro dev start'.
+### Setting Up Docker Compose:
 
-This command will spin up 4 Docker containers on your machine, each for a different Airflow component:
+1. **Create a Docker Compose File:** Create a file named `docker-compose.yml` in your project's root directory.
+2. **Configure Services:** In this file, you'll define the services (containers) for your Airflow environment, including the webserver, scheduler, and database.
 
-- Postgres: Airflow's Metadata Database
-- Webserver: The Airflow component responsible for rendering the Airflow UI
-- Scheduler: The Airflow component responsible for monitoring and triggering tasks
-- Triggerer: The Airflow component responsible for triggering deferred tasks
+### Starting the Airflow Environment:
 
-2. Verify that all 4 Docker containers were created by running 'docker ps'.
+1. **Run the Command:** In your terminal, run the following command:
+   ```bash
+   astro dev start
+   ```
+   This will start all the services defined in your `docker-compose.yml` file.
+2. **Access Airflow UI:** Once the services are up and running, you can access the Airflow UI by opening a web browser and going to `http://localhost:8080`.
+3. **Login to Airflow:** Use the default credentials: `admin` for both username and password.
 
-Note: Running 'astro dev start' will start your project with the Airflow Webserver exposed at port 8080 and Postgres exposed at port 5432. If you already have either of those ports allocated, you can either [stop your existing Docker containers or change the port](https://www.astronomer.io/docs/astro/cli/troubleshoot-locally#ports-are-not-available-for-my-local-airflow-webserver).
+### Setting Up Connections:
 
-3. Access the Airflow UI for your local Airflow project. To do so, go to http://localhost:8080/ and log in with 'admin' for both your Username and Password.
+1. **Add Connections:** In the Airflow UI, go to the Admin section and add the necessary connections. You'll need connections for your data sources and targets, such as a database connection for PostgreSQL.
 
-You should also be able to access your Postgres Database at 'localhost:5432/postgres'.
+### Running the DAG:
 
-Deploy Your Project to Astronomer
-=================================
+1. **Trigger the DAG:** Once your connections are set up, you can trigger your DAG to run. This will execute the tasks you defined in your Python file.
 
-If you have an Astronomer account, pushing code to a Deployment on Astronomer is simple. For deploying instructions, refer to Astronomer documentation: https://www.astronomer.io/docs/astro/deploy-code/
+### Monitoring the DAG:
 
-Contact
-=======
+1. **Check the DAG's Status:** In the Airflow UI, you can monitor the progress of your DAG and view the logs for each task.
+2. **Verify Data:** Use a database tool like DBeaver to check the data that has been loaded into your database.
 
-The Astronomer CLI is maintained with love by the Astronomer team. To report a bug or suggest a change, reach out to our support.
+By following these steps, you can successfully set up and run your Airflow data pipelines.
